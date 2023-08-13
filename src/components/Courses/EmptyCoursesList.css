@@ -1,0 +1,15 @@
+.empty-course-list {
+    text-align: center;
+    padding: 20px;
+    color: #555;
+}
+
+.empty-course-list h1 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+.empty-course-list h3 {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,56 @@
+.course-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    margin: 20px auto;
+    width: 800px;  /* Adjusted width for a wider card */
+}
+
+.course-card {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #e6e6e6;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+    background-color: #fcfcfc;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.course-card-left {
+    flex: 2;  /* Giving more space to the left section */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 20px;
+}
+
+.course-card-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.course-card-right div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;  /* Space between authors, duration, and date */
+}
+
+.course-card-right button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: #FFF;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.course-card-right button:hover {
+    background-color: #0056b3;
+}
