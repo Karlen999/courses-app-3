@@ -3,6 +3,7 @@ import SearchBar from './components/SearchBar/SearchBar';
 import CourseCard from './components/CourseCard/CourseCard';
 import Button from '../../common/Button/Button';
 import './Courses.css';
+import { mockedAuthorsList } from '../../constants';
 
 const Courses = ({ courses }) => {
 	const [filteredCourses, setFilteredCourses] = useState(courses);
@@ -31,7 +32,11 @@ const Courses = ({ courses }) => {
 			</div>
 
 			{filteredCourses.map((course) => (
-				<CourseCard key={course.id} course={course} />
+				<CourseCard
+					key={course.id}
+					course={course}
+					authors={mockedAuthorsList}
+				/>
 			))}
 		</div>
 	);

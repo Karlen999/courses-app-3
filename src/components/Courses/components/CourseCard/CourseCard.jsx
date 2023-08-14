@@ -1,21 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './CourseCard.css';
+import { formatDuration } from '../../../../helpers/getCourseDuration';
+import { formatCreationDate } from '../../../../helpers/formatCreationDate';
 
 const CourseCard = ({ course, authors }) => {
-	const formatDuration = (minutes) => {
-		const hours = Math.floor(minutes / 60);
-		const mins = minutes % 60;
-		return `${hours < 10 ? '0' + hours : hours}:${
-			mins < 10 ? '0' + mins : mins
-		} ${hours === 1 ? 'hour' : 'hours'}`;
-	};
-
-	const formatCreationDate = (date) => {
-		const [month, day, year] = new Date(date).toLocaleDateString().split('/');
-		return `${day}.${month}.${year}`;
-	};
-
 	const getAuthorsNames = (authorId) => {
 		if (!authors) return ''; // Return an empty string if authors is not defined
 

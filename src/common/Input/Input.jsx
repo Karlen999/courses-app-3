@@ -9,14 +9,16 @@ const Input = ({
 	...otherProps
 }) => {
 	return (
-		<input
-			className='custom-input'
-			type={type}
-			value={value}
-			onChange={onChange}
-			placeholder={placeholder}
-			{...otherProps}
-		/>
+		<form className='input-form'>
+			<input
+				className='custom-input'
+				type={type}
+				value={value}
+				onChange={onChange}
+				placeholder={placeholder}
+				{...otherProps}
+			/>
+		</form>
 	);
 };
 

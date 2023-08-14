@@ -19,24 +19,27 @@
 
 .courses-header .search-bar input {
 	padding: 10px 14px;
-	border: 2px solid #007BFF;
+	border: 2px solid #e2e6eb;
 	border-radius: 5px;
 	font-size: 1em;
 	margin-bottom: 10px;  /* Spacing between input and button */
+	margin-left: 509px;
 }
 
 /* Styling for the search button to ensure consistent size */
 .courses-header .search-bar button {
-	padding: 10px 20px;  /* Adjusted padding for a more suitable width */
-	border: none;
+	display: flex;
+	width: 148px;
+	height: 50px;
+	padding: 13px 36px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+
 	border-radius: 5px;
-	background-color: #007BFF;
+	background-color: #007298;
 	color: #FFF;
-	font-size: 1em;  /* Adjusted font size */
-	cursor: pointer;
-	transition: background-color 0.3s ease;
-	margin-top: 10px;  /* Spacing between the input field and the button */
-	white-space: nowrap;  /* Ensuring text doesn't wrap or get cut off */
 }
 
 .courses-header .search-bar button:hover {
@@ -45,14 +48,17 @@
 
 /* Styling for the "Add New Course" button to match the search button size */
 .courses-header button {
-	padding: 12px 40px;  /* Increased padding for a wider appearance */
-	border: 1px solid #007BFF;
-	border-radius: 5px;
-	background-color: #007BFF;
+	display: flex;
+	width: 183px;
+	height: 50px;
+	padding: 13px 36px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+	border-radius: 4px;
+	background:  #007298;
 	color: #FFF;
-	font-size: 1.1em;  /* Larger font size for prominence */
-	transition: background-color 0.3s ease;
-	margin-left: 20px;  /* Some distance from the search bar */
 }
 
 .courses-header button:hover {
