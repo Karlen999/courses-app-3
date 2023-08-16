@@ -12,18 +12,18 @@
 .courses-header .search-bar {
 	flex: 2;
 	display: flex;
-	flex-direction: column;  /* Stack child elements vertically */
-	justify-content: center;
-	align-items: stretch;  /* Allow child elements to take full width */
+	flex-direction: row;  /* Stack child elements vertically */
+	justify-content: flex-start;
+	align-items: center;  /* Allow child elements to take full width */
 }
 
 .courses-header .search-bar input {
-	padding: 10px 14px;
+	padding: 13px 14px;
 	border: 2px solid #e2e6eb;
 	border-radius: 5px;
 	font-size: 1em;
-	margin-bottom: 10px;  /* Spacing between input and button */
-	margin-left: 509px;
+	margin-bottom: 10px;
+	margin-left: 515px;
 }
 
 /* Styling for the search button to ensure consistent size */
@@ -59,6 +59,7 @@
 	border-radius: 4px;
 	background:  #007298;
 	color: #FFF;
+	margin-right: 226px;
 }
 
 .courses-header button:hover {

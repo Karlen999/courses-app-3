@@ -17,11 +17,11 @@ const CourseCard = ({ course, authors }) => {
 		<Link to={`/course/${course.id}`} className='course-card-link'>
 			<div className='course-card'>
 				<div className='course-card-left'>
-					<h2>{course.title}</h2>
+					<h2 className='course-card-title'>{course.title}</h2>
 					<p>{course.description}</p>
 				</div>
 				<div className='course-card-right'>
-					<div>
+					<div className='course-card-details'>
 						<p>Duration: {formatDuration(course.duration)}</p>
 						<p>Creation Date: {formatCreationDate(course.creationDate)}</p>
 						<p>Authors: {getAuthorsNames(course.authors)}</p>

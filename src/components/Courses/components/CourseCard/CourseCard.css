@@ -7,22 +7,37 @@
 }
 
 .course-card {
-    display: flex;
-    flex-direction: row;
-    border: 1px solid #e6e6e6;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
-    background-color: #fcfcfc;
-    transition: box-shadow 0.3s ease-in-out;
+    width: 1122px;
+    height: 238.412px;
+    flex-shrink: 0;
+    background-color: #FFF;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.12); /* This will give a similar effect to the SVG stroke */
+    padding: 15px; /* Add padding to position content within the box */
+    box-sizing: border-box;
 }
 
+.course-card-title {
+    color: #000;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Open Sans;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px;
+    text-transform: capitalize;
+}
+
+
 .course-card-left {
-    flex: 2;  /* Giving more space to the left section */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-right: 20px;
+    width: 677px;
+    color: #333E48;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Open Sans;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
 }
 
 .course-card-right {
@@ -34,10 +49,15 @@
 }
 
 .course-card-right div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;  /* Space between authors, duration, and date */
+    width: 323px;
+    color: #333E48;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Open Sans;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+    margin-top: -135px;
 }
 
 .course-card-right button {
@@ -49,9 +69,17 @@
     align-items: center;
     gap: 10px;
     flex-shrink: 0;
-    color: #FFF;
     border-radius: 4px;
-    background:  #007298;
+    background: #007298;
+    color: #FFF;
+}
+
+.course-card-top-stripe {
+    width: 238px;
+    height: 7px;
+    transform: rotate(-90deg);
+    flex-shrink: 0;
+    fill: #333E48;
 }
 
 .course-card-right button:hover {
