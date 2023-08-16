@@ -1,0 +1,26 @@
+.course-info {
+	padding: 20px;
+	border: 1px solid #dcdcdc;
+	border-radius: 10px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	background-color: #f7f7f7;
+}
+
+.course-info h1 {
+	font-size: 2.5em;
+	margin-bottom: 20px;
+	color: #444;
+}
+
+.course-info p {
+	margin-bottom: 20px;
+	color: #666;
+	line-height: 1.5;
+}
+
+/* Positioning the Back button to the right bottom corner */
+.back-button {
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+}

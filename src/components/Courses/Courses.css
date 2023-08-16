@@ -1,0 +1,67 @@
+/* Layout for the header section of the Courses component */
+.courses-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+	width: 100%;
+	padding: 0 15px;
+}
+
+/* Styling for the search bar to stack elements vertically */
+.courses-header .search-bar {
+	flex: 2;
+	display: flex;
+	flex-direction: row;  /* Stack child elements vertically */
+	justify-content: flex-start;
+	align-items: center;  /* Allow child elements to take full width */
+}
+
+.courses-header .search-bar input {
+	padding: 13px 14px;
+	border: 2px solid #e2e6eb;
+	border-radius: 5px;
+	font-size: 1em;
+	margin-bottom: 10px;
+	margin-left: 515px;
+}
+
+/* Styling for the search button to ensure consistent size */
+.courses-header .search-bar button {
+	display: flex;
+	width: 148px;
+	height: 50px;
+	padding: 13px 36px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+
+	border-radius: 5px;
+	background-color: #007298;
+	color: #FFF;
+}
+
+.courses-header .search-bar button:hover {
+	background-color: #0056b3;
+}
+
+/* Styling for the "Add New Course" button to match the search button size */
+.courses-header button {
+	display: flex;
+	width: 183px;
+	height: 50px;
+	padding: 13px 36px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+	border-radius: 4px;
+	background:  #007298;
+	color: #FFF;
+	margin-right: 226px;
+}
+
+.courses-header button:hover {
+	background-color: #0056b3;
+}

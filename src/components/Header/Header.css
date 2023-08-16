@@ -1,0 +1,14 @@
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+    background-color: #f9f9f9;
+    height: 65px;  /* Slightly reduced height for better vertical alignment */
+}
+
+.app-header .custom-button {
+    margin-right: 0;
+    border-radius: 4px;
+    padding: 10px 25px;
+}
