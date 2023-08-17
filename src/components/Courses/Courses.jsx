@@ -4,8 +4,10 @@ import CourseCard from './components/CourseCard/CourseCard';
 import Button from '../../common/Button/Button';
 import './Courses.css';
 import { mockedAuthorsList } from '../../constants';
+import { useNavigate } from 'react-router-dom';
 
 const Courses = ({ courses }) => {
+	const navigate = useNavigate();
 	const [filteredCourses, setFilteredCourses] = useState(courses);
 
 	const handleSearch = (query) => {
@@ -28,7 +30,10 @@ const Courses = ({ courses }) => {
 			{/* Header section with search bar and "Add New Course" button */}
 			<div className='courses-header'>
 				<SearchBar onSearch={handleSearch} />
-				<Button buttonText='Add New Course' />
+				<Button
+					buttonText='Add New Course'
+					onClick={() => navigate('/courses/add')}
+				/>
 			</div>
 
 			{filteredCourses.map((course) => (

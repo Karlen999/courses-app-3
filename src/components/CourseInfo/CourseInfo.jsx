@@ -30,7 +30,7 @@ const CourseInfo = () => {
 			<p>Creation Date: {course.creationDate}</p>
 			<p>Description: {course.description}</p>
 			<p>Authors: {authorsList}</p>
-			<Button buttonText='Back' onClick={() => navigate('/')} />
+			<Button buttonText='Back' onClick={() => navigate('/courses')} />
 		</div>
 	);
 };
