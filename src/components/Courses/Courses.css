@@ -18,12 +18,11 @@
 }
 
 .courses-header .search-bar input {
-	padding: 24px 27px;
+	padding: 24px 50px;
 	border: 2px solid #e2e6eb;
 	border-radius: 5px;
 	font-size: 1em;
 	margin-bottom: -12px;
-	margin-left: 515px;
 }
 
 /* Styling for the search button to ensure consistent size */

@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route,
+	Navigate,
+} from 'react-router-dom';
 import './App.css';
 import Header from './components/Header/Header';
 import Courses from './components/Courses/Courses';
@@ -10,27 +15,32 @@ import Registration from './components/Registration/Registration';
 import Login from './components/Login/Login';
 import { mockedCoursesList, mockedAuthorsList } from './constants';
 
-const App = () => {
-	// Determine if courses are available
+type Course = {
+	id: string;
+	title: string;
+	description: string;
+	creationDate: string;
+	duration: number;
+	authors: string[];
+};
+
+const App: React.FC = () => {
 	const hasCourses = mockedCoursesList && mockedCoursesList.length > 0;
+	const [coursesList, setCoursesList] = useState(mockedCoursesList);
+	const addCourse = (newCourse: Course) => {
+		setCoursesList((prevCourses) => [...prevCourses, newCourse]);
+	};
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	return (
 		<Router>
+			<Header isLoggedIn={isLoggedIn} onLogout={() => setIsLoggedIn(false)} />
 			<div className='app-container'>
-				<Header isLoggedIn={isLoggedIn} onLogout={() => setIsLoggedIn(false)} />
 				<main>
 					<Routes>
-						{/* Add routes for Login and Registration */}
 						<Route
 							path='/login'
-							element={
-								<Login
-									onLoginSuccess={() => {
-										setIsLoggedIn(true);
-									}}
-								/>
-							}
+							element={<Login onLoginSuccess={() => setIsLoggedIn(true)} />}
 						/>
 						<Route
 							path='/registration'
@@ -40,26 +50,42 @@ const App = () => {
 								/>
 							}
 						/>
-						{/* Add the route for the CreateCourse component */}
-						<Route path='/courses/add' element={<CreateCourse />} />
-						{/* Render Courses or EmptyCoursesList based on availability */}
 						<Route
-							path='/courses'
+							path='/courses/add'
 							element={
-								hasCourses ? (
-									<Courses
-										courses={mockedCoursesList}
-										authors={mockedAuthorsList}
-									/>
+								isLoggedIn ? (
+									<CreateCourse addCourse={addCourse} />
 								) : (
-									<EmptyCoursesList />
+									<Navigate to='/login' />
 								)
 							}
 						/>
-						{/* Render CourseInfo for specific course */}
+						<Route
+							path='/courses'
+							element={
+								isLoggedIn ? (
+									hasCourses ? (
+										<Courses
+											courses={coursesList}
+											authors={mockedAuthorsList}
+										/>
+									) : (
+										<EmptyCoursesList />
+									)
+								) : (
+									<Navigate to='/login' />
+								)
+							}
+						/>
 						<Route
 							path='/courses/:courseId'
-							element={<CourseInfo authors={mockedAuthorsList} />}
+							element={
+								isLoggedIn ? (
+									<CourseInfo authors={mockedAuthorsList} />
+								) : (
+									<Navigate to='/login' />
+								)
+							}
 						/>
 					</Routes>
 				</main>

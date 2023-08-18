@@ -1,5 +1,7 @@
 .app-container {
     font-family: Arial, sans-serif;
+    width: 1240px;
+    margin: 0 auto;
 }
 
 header {
@@ -11,4 +13,13 @@ header {
 
 .logo {
     height: 60px;  /* Adjust based on your logo's size */
+}
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #333E48;
+    opacity: 0.5;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
 }

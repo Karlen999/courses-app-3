@@ -4,6 +4,9 @@ import Input from '../../common/Input/Input';
 import AuthorItem from './components/AuthorItem/AuthorItem';
 import { mockedAuthorsList } from '../../constants';
 import { formatDuration } from '../../helpers/getCourseDuration';
+import AddIcon from '../../assets/AddIcon';
+import DeleteIcon from '../../assets/DeleteIcon';
+import { v4 as uuidv4 } from 'uuid';
 import './CreateCourse.css';
 
 type Author = {
@@ -17,7 +20,11 @@ type Errors = {
 	duration?: string;
 };
 
-const CreateCourse: React.FC = () => {
+type CreateCourseProps = {
+	addCourse: (course: any) => void;
+};
+
+const CreateCourse: React.FC<CreateCourseProps> = ({ addCourse }) => {
 	const navigate = useNavigate();
 
 	// State declarations with type definitions
@@ -42,10 +49,6 @@ const CreateCourse: React.FC = () => {
 
 		setErrors(errors);
 		return Object.keys(errors).length === 0;
-	};
-
-	const generateId = (): string => {
-		return Math.random().toString(36).substr(2, 9);
 	};
 
 	// Event handlers with type definitions
@@ -83,7 +86,7 @@ const CreateCourse: React.FC = () => {
 	const handleCreateAuthor = () => {
 		if (newAuthorName.length >= 2) {
 			const newAuthor: Author = {
-				id: generateId(),
+				id: uuidv4(),
 				name: newAuthorName,
 			};
 			setAuthors((prevAuthors) => [...prevAuthors, newAuthor]);
@@ -93,6 +96,16 @@ const CreateCourse: React.FC = () => {
 
 	const handleSaveCourse = () => {
 		if (validateFields()) {
+			const newCourse = {
+				id: uuidv4(),
+				title,
+				description,
+				creationDate: new Date().toISOString(),
+				duration,
+				authors: courseAuthors.map((author) => author.id),
+			};
+
+			addCourse(newCourse);
 			navigate('/courses');
 		}
 	};
@@ -110,7 +123,7 @@ const CreateCourse: React.FC = () => {
 						value={title}
 						onChange={(e) => handleInputChange(e, setTitle)}
 					/>
-					{errors.title && <div className='error-message'>{errors.title}</div>}
+					{errors.title && <div className='error'>{errors.title}</div>}
 
 					<label className='course-input-label'>Description</label>
 					<input
@@ -120,7 +133,7 @@ const CreateCourse: React.FC = () => {
 						onChange={(e) => handleInputChange(e, setDescription)}
 					/>
 					{errors.description && (
-						<div className='error-message'>{errors.description}</div>
+						<div className='error'>{errors.description}</div>
 					)}
 
 					<h4 className='course-subtitle'>Duration</h4>
@@ -132,9 +145,7 @@ const CreateCourse: React.FC = () => {
 						onChange={(e) => handleInputChange(e, setDuration)}
 						type='number'
 					/>
-					{errors.duration && (
-						<div className='error-message'>{errors.duration}</div>
-					)}
+					{errors.duration && <div className='error'>{errors.duration}</div>}
 
 					<div className='course-authors-label'>Course Authors</div>
 
@@ -178,51 +189,16 @@ const CreateCourse: React.FC = () => {
 							className='add-author-button'
 							onClick={() => handleAddAuthor(selectedAuthorId || '')}
 						>
-							<svg
-								xmlns='http://www.w3.org/2000/svg'
-								width='13'
-								height='13'
-								viewBox='0 0 13 13'
-								fill='none'
-							>
-								<path
-									d='M3.25 6.5H9.75M6.5 9.75V3.25'
-									stroke='#333E48'
-									strokeWidth='1.5'
-									strokeLinecap='round'
-									strokeLinejoin='round'
-								/>
-							</svg>
+							<AddIcon />
 						</button>
 						<button
 							className='delete-author-button'
 							onClick={() => handleDeleteAuthor(selectedAuthorId || '')}
 						>
-							<svg
-								xmlns='http://www.w3.org/2000/svg'
-								width='13'
-								height='13'
-								viewBox='0 0 13 13'
-								fill='none'
-							>
-								<g clip-path='url(#clip0_6131_501)'>
-									<path
-										d='M11.375 3.23917C9.57125 3.06042 7.75667 2.96833 5.9475 2.96833C4.875 2.96833 3.8025 3.0225 2.73 3.13083L1.625 3.23917M4.60417 2.69208L4.72333 1.9825C4.81 1.46792 4.875 1.08333 5.79042 1.08333H7.20958C8.125 1.08333 8.19542 1.48958 8.27667 1.98792L8.39583 2.69208M10.2104 4.95083L9.85833 10.4054C9.79875 11.2558 9.75 11.9167 8.23875 11.9167H4.76125C3.25 11.9167 3.20125 11.2558 3.14167 10.4054L2.78958 4.95083M5.59542 8.9375H7.39917M5.14583 6.77083H7.85417'
-										stroke='#333E48'
-										stroke-width='1.5'
-										stroke-linecap='round'
-										stroke-linejoin='round'
-									/>
-								</g>
-								<defs>
-									<clipPath id='clip0_6131_501'>
-										<rect width='13' height='13' fill='white' />
-									</clipPath>
-								</defs>
-							</svg>
+							<DeleteIcon />
 						</button>
 					</div>
-					{errors.title && <div className='error-message'>{errors.title}</div>}
+					{errors.title && <div className='error'>{errors.title}</div>}
 				</div>
 				<button
 					className='primary-standard-button cancel-button'
