@@ -12,7 +12,7 @@ type HeaderProps = {
 const Header: React.FC<HeaderProps> = ({ isLoggedIn, onLogout }) => {
 	const handleLogout = () => {
 		localStorage.removeItem('token');
-		localStorage.removeItem('username'); // Assuming you're storing username in local storage
+		localStorage.removeItem('username');
 		onLogout();
 	};
 

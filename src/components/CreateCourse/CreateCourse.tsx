@@ -4,8 +4,8 @@ import Input from '../../common/Input/Input';
 import AuthorItem from './components/AuthorItem/AuthorItem';
 import { mockedAuthorsList } from '../../constants';
 import { formatDuration } from '../../helpers/getCourseDuration';
-import AddIcon from '../../assets/AddIcon';
-import DeleteIcon from '../../assets/DeleteIcon';
+import AddIcon from '../../assets/AddIcon.svg';
+import DeleteIcon from '../../assets/DeleteIcon.svg';
 import { v4 as uuidv4 } from 'uuid';
 import './CreateCourse.css';
 
@@ -189,13 +189,13 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ addCourse }) => {
 							className='add-author-button'
 							onClick={() => handleAddAuthor(selectedAuthorId || '')}
 						>
-							<AddIcon />
+							<img src={AddIcon} alt='' />
 						</button>
 						<button
 							className='delete-author-button'
 							onClick={() => handleDeleteAuthor(selectedAuthorId || '')}
 						>
-							<DeleteIcon />
+							<img src={DeleteIcon} alt='' />
 						</button>
 					</div>
 					{errors.title && <div className='error'>{errors.title}</div>}

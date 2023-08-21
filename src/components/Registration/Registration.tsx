@@ -46,6 +46,7 @@ const Registration: React.FC<RegistrationProps> = ({
 
 				if (response.status === 201) {
 					onRegistrationSuccess();
+					localStorage.setItem('username', formData.name);
 					navigate('/login');
 				} else {
 					const data = await response.json();
