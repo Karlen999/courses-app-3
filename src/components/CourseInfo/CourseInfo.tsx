@@ -4,8 +4,19 @@ import Button from '../../common/Button/Button';
 import './CourseInfo.css';
 import { mockedCoursesList, mockedAuthorsList } from '../../constants';
 
-const CourseInfo = () => {
-	const { id } = useParams();
+type ParamsType = {
+	id: string;
+};
+type AuthorType = {
+	id: string;
+	name: string;
+};
+type CourseInfoProps = {
+	authors: AuthorType[];
+};
+
+const CourseInfo: React.FC<CourseInfoProps> = ({ authors }) => {
+	const { id } = useParams<ParamsType>();
 	const navigate = useNavigate();
 	const course = mockedCoursesList.find((course) => course.id === id);
 
@@ -30,7 +41,7 @@ const CourseInfo = () => {
 			<p>Creation Date: {course.creationDate}</p>
 			<p>Description: {course.description}</p>
 			<p>Authors: {authorsList}</p>
-			<Button buttonText='Back' onClick={() => navigate('/')} />
+			<Button buttonText='Back' onClick={() => navigate('/courses')} />
 		</div>
 	);
 };

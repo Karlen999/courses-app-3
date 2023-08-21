@@ -8,7 +8,17 @@
 }
 
 .app-header .custom-button {
-    margin-right: 0;
+    margin-right: 85px;
     border-radius: 4px;
     padding: 10px 25px;
 }
+
+.username {
+    margin-right: 10px;
+
+}
+.user-section {
+    display: flex;
+    align-items: center;
+}
+

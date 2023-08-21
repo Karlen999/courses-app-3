@@ -3,12 +3,32 @@ import SearchBar from './components/SearchBar/SearchBar';
 import CourseCard from './components/CourseCard/CourseCard';
 import Button from '../../common/Button/Button';
 import './Courses.css';
-import { mockedAuthorsList } from '../../constants';
+import { useNavigate } from 'react-router-dom';
 
-const Courses = ({ courses }) => {
+type AuthorType = {
+	id: string;
+	name: string;
+};
+
+type CourseType = {
+	id: string;
+	title: string;
+	description: string;
+	creationDate: string;
+	duration: number;
+	authors: string[];
+};
+
+type CoursesProps = {
+	courses: CourseType[];
+	authors: AuthorType[];
+};
+
+const Courses: React.FC<CoursesProps> = ({ courses, authors }) => {
+	const navigate = useNavigate();
 	const [filteredCourses, setFilteredCourses] = useState(courses);
 
-	const handleSearch = (query) => {
+	const handleSearch = (query: string) => {
 		if (!query) {
 			setFilteredCourses(courses);
 			return;
@@ -28,14 +48,17 @@ const Courses = ({ courses }) => {
 			{/* Header section with search bar and "Add New Course" button */}
 			<div className='courses-header'>
 				<SearchBar onSearch={handleSearch} />
-				<Button buttonText='Add New Course' />
+				<Button
+					buttonText='Add New Course'
+					onClick={() => navigate('/courses/add')}
+				/>
 			</div>
 
 			{filteredCourses.map((course) => (
 				<CourseCard
 					key={course.id}
 					course={course}
-					authors={mockedAuthorsList}
+					authors={authors} // Use the authors prop here
 				/>
 			))}
 		</div>

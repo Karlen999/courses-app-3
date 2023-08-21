@@ -1,15 +1,11 @@
 .course-card-link {
     text-decoration: none;
-    color: inherit;
     display: block;
     margin: 20px auto;
-    width: 800px;  /* Adjusted width for a wider card */
 }
 
 .course-card {
-    width: 1122px;
-    height: 238.412px;
-    flex-shrink: 0;
+    height: auto;
     background-color: #FFF;
     border: 1px solid rgba(0, 0, 0, 0.12);
     box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.12); /* This will give a similar effect to the SVG stroke */
