@@ -138,24 +138,29 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ addCourse }) => {
 
 					<h4 className='course-subtitle'>Duration</h4>
 					<label className='course-input-label'>Duration</label>
-					<input
-						className='course-input-duration'
-						placeholder='Input text'
-						value={duration.toString()}
-						onChange={(e) => handleInputChange(e, setDuration)}
-						type='number'
-					/>
+					<div className='duration-container'>
+						<input
+							type='number'
+							value={duration.toString()}
+							onChange={(e) =>
+								setDuration(Math.max(0, parseInt(e.target.value)))
+							}
+							className='course-input-duration'
+							min='1'
+						/>
+						<span>{formatDuration(duration)} hours</span>
+					</div>
 					{errors.duration && <div className='error'>{errors.duration}</div>}
 
 					<div className='course-authors-label'>Course Authors</div>
 
-					<div className='course-authors-list'>
+					<div className='author-name'>
 						{courseAuthors.map((author) => (
 							<AuthorItem
 								key={author.id}
 								name={author.name}
 								onButtonClick={() => handleDeleteAuthor(author.id)}
-								buttonText='Delete'
+								icon={DeleteIcon}
 							/>
 						))}
 					</div>

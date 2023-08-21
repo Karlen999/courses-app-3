@@ -115,6 +115,22 @@
     margin-left: 80px;
 }
 
+.duration-container {
+    display: flex;
+    align-items: center;
+}
+
+.course-input-duration + span {
+    /* Sample styles for the displayed duration. Adjust as needed */
+    color: var(--primary-efx-dark, #333E48);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: "Open Sans";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+
 .course-input-author {
     display: flex;
     width: 400px;
@@ -162,13 +178,26 @@
 .delete-author-button {
     background-color: transparent;
     border: none;
+    outline: none;
     cursor: pointer;
     display: flex;
     align-items: center;
-    color: #333E48;
     padding: 10px;
     margin-left: -20px;
     margin-top: -35px;
+}
+
+.course-delete-author-button {
+    width: auto !important;
+    height: auto !important;
+    padding: 0 !important;
+    border: none !important;
+    background-color: transparent;
+    outline: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 auto;
 }
 
 .primary-standard-button {
@@ -202,10 +231,9 @@
 }
 
 .course-authors-label {
-    position: absolute;
-    bottom: 274px;
-    right: 57px;
-    display: flex;
+    position: relative;
+    margin-bottom: 10px;
+    display: block;
     width: 187px;
     height: 19px;
     flex-direction: column;
@@ -217,18 +245,22 @@
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
-    line-height: 20px; /* 83.333% */
+    line-height: 20px;
+    margin-left: auto;
 }
+
 .author-item {
     display: flex;
-    justify-content: space-between;
+    margin-top: 5px;
     align-items: center;
-    margin-bottom: 10px; /* or any other desired spacing */
 }
 
 .author-name {
-    font-size: 16px; /* or any other desired size */
+    display: block;
+    font-size: 16px;
     font-weight: 500;
+    margin-right: 10px;
+    margin-left: 450px;
     color: var(--primary-efx-dark, #333E48);
 }
 
