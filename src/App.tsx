@@ -14,35 +14,42 @@ import EmptyCoursesList from './components/Courses/EmptyCoursesList';
 import Registration from './components/Registration/Registration';
 import Login from './components/Login/Login';
 import { RootState, Course } from './types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuthenticated } from './store/user/actions';
 
 const App: React.FC = () => {
+	const dispatch = useDispatch();
+
 	const coursesFromStore = useSelector((state: RootState) => state.courses);
 	const authorsFromStore = useSelector((state: RootState) => state.authors);
 	const userRoleFromStore = useSelector((state: RootState) => state.user.role);
+	const isLoggedIn = useSelector((state: RootState) => state.user.isAuth);
 
 	const hasCourses = coursesFromStore && authorsFromStore.length > 0;
 	const [coursesList, setCoursesList] = useState<Course[]>(coursesFromStore);
 	const addCourse = (newCourse: Course) => {
 		setCoursesList((prevCourses) => [...prevCourses, newCourse]);
 	};
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	return (
 		<Router>
-			<Header isLoggedIn={isLoggedIn} onLogout={() => setIsLoggedIn(false)} />
+			<Header />
 			<div className='app-container'>
 				<main>
 					<Routes>
 						<Route
 							path='/login'
-							element={<Login onLoginSuccess={() => setIsLoggedIn(true)} />}
+							element={
+								<Login
+									onLoginSuccess={() => dispatch(setAuthenticated(true))}
+								/>
+							}
 						/>
 						<Route
 							path='/registration'
 							element={
 								<Registration
-									onRegistrationSuccess={() => setIsLoggedIn(true)}
+									onRegistrationSuccess={() => dispatch(setAuthenticated(true))}
 								/>
 							}
 						/>

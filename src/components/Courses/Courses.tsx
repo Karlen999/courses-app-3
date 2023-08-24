@@ -14,11 +14,6 @@ const Courses: React.FC = () => {
 	const authors = useSelector((state: RootState) => state.authors);
 	console.log('Authors from Redux:', authors);
 
-	useEffect(() => {
-		dispatch(fetchCoursesData());
-		dispatch(fetchAuthorsData());
-	}, [dispatch]);
-
 	const navigate = useNavigate();
 	const [filteredCourses, setFilteredCourses] = useState(courses);
 
