@@ -1,12 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './CourseCard.css';
+import { Course, Author } from '../../../../types';
 import { formatDuration } from '../../../../helpers/getCourseDuration';
 import { formatCreationDate } from '../../../../helpers/formatCreationDate';
 
-const CourseCard = ({ course, authors }) => {
-	const getAuthorsNames = (authorId) => {
-		if (!authors) return ''; // Return an empty string if authors is not defined
+type CourseCardProps = {
+	course: Course;
+	authors: Author[];
+};
+
+const CourseCard: React.FC<CourseCardProps> = ({ course, authors }) => {
+	const getAuthorsNames = (authorId: string[]): string => {
+		if (!authors) return '';
 
 		return authorId
 			.map((id) => authors.find((author) => author.id === id)?.name)

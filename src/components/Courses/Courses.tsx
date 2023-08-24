@@ -1,30 +1,24 @@
-import React, { useState } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar/SearchBar';
 import CourseCard from './components/CourseCard/CourseCard';
 import Button from '../../common/Button/Button';
+import { Author, Course, RootState } from '../../types';
 import './Courses.css';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAuthorsData, fetchCoursesData } from '../../store/thunks';
 
-type AuthorType = {
-	id: string;
-	name: string;
-};
+const Courses: React.FC = () => {
+	const dispatch: Dispatch<any> = useDispatch();
+	const courses = useSelector((state: RootState) => state.courses);
+	const authors = useSelector((state: RootState) => state.authors);
+	console.log('Authors from Redux:', authors);
 
-type CourseType = {
-	id: string;
-	title: string;
-	description: string;
-	creationDate: string;
-	duration: number;
-	authors: string[];
-};
+	useEffect(() => {
+		dispatch(fetchCoursesData());
+		dispatch(fetchAuthorsData());
+	}, [dispatch]);
 
-type CoursesProps = {
-	courses: CourseType[];
-	authors: AuthorType[];
-};
-
-const Courses: React.FC<CoursesProps> = ({ courses, authors }) => {
 	const navigate = useNavigate();
 	const [filteredCourses, setFilteredCourses] = useState(courses);
 
@@ -45,7 +39,6 @@ const Courses: React.FC<CoursesProps> = ({ courses, authors }) => {
 
 	return (
 		<div className='courses-container'>
-			{/* Header section with search bar and "Add New Course" button */}
 			<div className='courses-header'>
 				<SearchBar onSearch={handleSearch} />
 				<Button

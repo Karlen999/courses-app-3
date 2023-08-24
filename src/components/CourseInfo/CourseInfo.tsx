@@ -1,8 +1,9 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Button from '../../common/Button/Button';
+import { RootState } from '../../types';
 import './CourseInfo.css';
-import { mockedCoursesList, mockedAuthorsList } from '../../constants';
 
 type ParamsType = {
 	id: string;
@@ -18,9 +19,12 @@ type CourseInfoProps = {
 const CourseInfo: React.FC<CourseInfoProps> = ({ authors }) => {
 	const { id } = useParams<ParamsType>();
 	const navigate = useNavigate();
-	const course = mockedCoursesList.find((course) => course.id === id);
 
-	// If course is not found, display an error message
+	const courses = useSelector((state: RootState) => state.courses);
+	const authorsFromStore = useSelector((state: RootState) => state.authors);
+
+	const course = courses.find((course) => course.id === id);
+
 	if (!course) {
 		return <div>Course not found!</div>;
 	}
@@ -29,7 +33,7 @@ const CourseInfo: React.FC<CourseInfoProps> = ({ authors }) => {
 	const authorsList = course.authors
 		.map(
 			(authorId) =>
-				mockedAuthorsList.find((author) => author.id === authorId)?.name
+				authorsFromStore.find((author) => author.id === authorId)?.name
 		)
 		.filter(Boolean)
 		.join(', ');

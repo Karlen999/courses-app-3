@@ -13,20 +13,16 @@ import CreateCourse from './components/CreateCourse/CreateCourse';
 import EmptyCoursesList from './components/Courses/EmptyCoursesList';
 import Registration from './components/Registration/Registration';
 import Login from './components/Login/Login';
-import { mockedCoursesList, mockedAuthorsList } from './constants';
-
-type Course = {
-	id: string;
-	title: string;
-	description: string;
-	creationDate: string;
-	duration: number;
-	authors: string[];
-};
+import { RootState, Course } from './types';
+import { useSelector } from 'react-redux';
 
 const App: React.FC = () => {
-	const hasCourses = mockedCoursesList && mockedCoursesList.length > 0;
-	const [coursesList, setCoursesList] = useState(mockedCoursesList);
+	const coursesFromStore = useSelector((state: RootState) => state.courses);
+	const authorsFromStore = useSelector((state: RootState) => state.authors);
+	const userRoleFromStore = useSelector((state: RootState) => state.user.role);
+
+	const hasCourses = coursesFromStore && authorsFromStore.length > 0;
+	const [coursesList, setCoursesList] = useState<Course[]>(coursesFromStore);
 	const addCourse = (newCourse: Course) => {
 		setCoursesList((prevCourses) => [...prevCourses, newCourse]);
 	};
@@ -65,12 +61,9 @@ const App: React.FC = () => {
 							element={
 								isLoggedIn ? (
 									hasCourses ? (
-										<Courses
-											courses={coursesList}
-											authors={mockedAuthorsList}
-										/>
+										<Courses />
 									) : (
-										<EmptyCoursesList />
+										<EmptyCoursesList userRole={userRoleFromStore} />
 									)
 								) : (
 									<Navigate to='/login' />
@@ -81,7 +74,7 @@ const App: React.FC = () => {
 							path='/courses/:courseId'
 							element={
 								isLoggedIn ? (
-									<CourseInfo authors={mockedAuthorsList} />
+									<CourseInfo authors={authorsFromStore} />
 								) : (
 									<Navigate to='/login' />
 								)

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setAuthenticated, setUserDetails } from '../../store/user/actions';
 import './Login.css';
 
 interface LoginProps {
@@ -8,6 +10,7 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const [formData, setFormData] = useState({
 		email: '',
 		password: '',
@@ -39,8 +42,17 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 					body: JSON.stringify(formData),
 				});
 				if (response.status === 201) {
-					const { result } = await response.json();
-					localStorage.setItem('token', result);
+					const { result: token, user } = await response.json();
+					localStorage.setItem('token', token);
+					const role = user.email === 'admin@email.com' ? 'admin' : 'user';
+					dispatch(
+						setUserDetails({
+							name: formData.email,
+							email: formData.email,
+							token: token,
+							role: role,
+						})
+					);
 					onLoginSuccess();
 					navigate('/courses');
 				} else {

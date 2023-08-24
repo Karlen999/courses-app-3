@@ -1,13 +1,22 @@
-import React, { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
+import React, {
+	useState,
+	ChangeEvent,
+	Dispatch,
+	SetStateAction,
+	useEffect,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Input from '../../common/Input/Input';
 import AuthorItem from './components/AuthorItem/AuthorItem';
-import { mockedAuthorsList } from '../../constants';
 import { formatDuration } from '../../helpers/getCourseDuration';
 import AddIcon from '../../assets/AddIcon.svg';
 import DeleteIcon from '../../assets/DeleteIcon.svg';
 import { v4 as uuidv4 } from 'uuid';
+import { RootState } from '../../types';
 import './CreateCourse.css';
+import { saveAuthor } from '../../store/authors/actions';
+import { saveCourse } from '../../store/courses/actions';
 
 type Author = {
 	id: string;
@@ -25,17 +34,21 @@ type CreateCourseProps = {
 };
 
 const CreateCourse: React.FC<CreateCourseProps> = ({ addCourse }) => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
-
-	// State declarations with type definitions
+	const authorsFromStore = useSelector((state: RootState) => state.authors);
 	const [title, setTitle] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
 	const [duration, setDuration] = useState<number>(0);
-	const [authors, setAuthors] = useState<Author[]>(mockedAuthorsList);
+	const [authors, setAuthors] = useState<Author[]>(authorsFromStore);
 	const [courseAuthors, setCourseAuthors] = useState<Author[]>([]);
 	const [newAuthorName, setNewAuthorName] = useState<string>('');
 	const [selectedAuthorId, setSelectedAuthorId] = useState<string | null>(null);
 	const [errors, setErrors] = useState<Errors>({});
+
+	useEffect(() => {
+		setAuthors(authorsFromStore);
+	}, [authorsFromStore]);
 
 	const validateFields = (): boolean => {
 		const errors: Errors = {};
@@ -89,6 +102,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ addCourse }) => {
 				id: uuidv4(),
 				name: newAuthorName,
 			};
+			dispatch(saveAuthor(newAuthor));
 			setAuthors((prevAuthors) => [...prevAuthors, newAuthor]);
 			setNewAuthorName('');
 		}
@@ -106,6 +120,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ addCourse }) => {
 			};
 
 			addCourse(newCourse);
+			dispatch(saveCourse(newCourse));
 			navigate('/courses');
 		}
 	};
@@ -219,7 +234,6 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ addCourse }) => {
 					CREATE COURSE
 				</button>
 			</div>
-			;
 		</>
 	);
 };
