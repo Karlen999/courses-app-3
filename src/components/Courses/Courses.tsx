@@ -15,8 +15,16 @@ const Courses: React.FC = () => {
 	console.log('Authors from Redux:', authors);
 
 	const navigate = useNavigate();
-	const [filteredCourses, setFilteredCourses] = useState(courses);
+	const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
 
+	useEffect(() => {
+		dispatch(fetchCoursesData());
+		dispatch(fetchAuthorsData());
+	}, [dispatch]);
+
+	useEffect(() => {
+		setFilteredCourses(courses);
+	}, [courses]);
 	const handleSearch = (query: string) => {
 		if (!query) {
 			setFilteredCourses(courses);

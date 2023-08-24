@@ -1,7 +1,7 @@
 .course-card-link {
     text-decoration: none;
     display: block;
-    margin: 20px auto;
+    margin: 30px auto;
 }
 
 .course-buttons-container {
@@ -11,12 +11,14 @@
 }
 
 .course-card {
-    height: auto;
+    height: 192px;
     background-color: #FFF;
     border: 1px solid rgba(0, 0, 0, 0.12);
-    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.12); /* This will give a similar effect to the SVG stroke */
-    padding: 15px; /* Add padding to position content within the box */
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.12);
+    padding: 20px;
     box-sizing: border-box;
+    border-radius: 8px;
+    transition: transform 0.3s;
 }
 
 .course-card-title {
@@ -28,6 +30,7 @@
     font-weight: 700;
     line-height: 32px;
     text-transform: capitalize;
+    margin-bottom: 10px;
 }
 
 
@@ -40,6 +43,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
+    padding-right: 15px;
 }
 
 .course-card-right {
@@ -48,6 +52,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
+    padding-left: 15px;
 }
 
 .course-card-right div {
@@ -59,14 +64,14 @@
     font-style: normal;
     font-weight: 700;
     line-height: 11px;
-    margin-top: -135px;
+    margin-top: -125px;
 }
 
 .course-card-right button, .course-button {
     display: flex;
     width: 60px;
     height: 50px;
-    padding: 13px 36px;
+    padding: 13px 30px;
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -74,6 +79,9 @@
     border-radius: 4px;
     background: #007298;
     color: #FFF;
+    border: none;
+    cursor: pointer;
+    margin-bottom: -30px;
 }
 
 .course-card-top-stripe {
@@ -90,4 +98,9 @@
 
 .course-button {
     width: 61px;
+}
+
+.course-button img {
+    max-width: 24px;
+    max-height: 24px;
 }

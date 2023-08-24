@@ -6,7 +6,7 @@ import { RootState } from '../../types';
 import './CourseInfo.css';
 
 type ParamsType = {
-	id: string;
+	courseId: string;
 };
 type AuthorType = {
 	id: string;
@@ -17,13 +17,16 @@ type CourseInfoProps = {
 };
 
 const CourseInfo: React.FC<CourseInfoProps> = ({ authors }) => {
-	const { id } = useParams<ParamsType>();
+	const { courseId } = useParams<ParamsType>();
+	console.log('Course ID from URL:', courseId);
+
 	const navigate = useNavigate();
 
 	const courses = useSelector((state: RootState) => state.courses);
 	const authorsFromStore = useSelector((state: RootState) => state.authors);
 
-	const course = courses.find((course) => course.id === id);
+	const course = courses.find((course) => course.id === courseId);
+	console.log('Found course:', course);
 
 	if (!course) {
 		return <div>Course not found!</div>;

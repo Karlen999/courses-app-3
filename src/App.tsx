@@ -16,6 +16,7 @@ import Login from './components/Login/Login';
 import { RootState, Course } from './types';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthenticated } from './store/user/actions';
+import useProtectedElement from './utils/useProtectedElement';
 
 const App: React.FC = () => {
 	const dispatch = useDispatch();
@@ -23,7 +24,6 @@ const App: React.FC = () => {
 	const coursesFromStore = useSelector((state: RootState) => state.courses);
 	const authorsFromStore = useSelector((state: RootState) => state.authors);
 	const userRoleFromStore = useSelector((state: RootState) => state.user.role);
-	const isLoggedIn = useSelector((state: RootState) => state.user.isAuth);
 
 	const hasCourses = coursesFromStore && authorsFromStore.length > 0;
 	const [coursesList, setCoursesList] = useState<Course[]>(coursesFromStore);
@@ -55,37 +55,25 @@ const App: React.FC = () => {
 						/>
 						<Route
 							path='/courses/add'
-							element={
-								isLoggedIn ? (
-									<CreateCourse addCourse={addCourse} />
-								) : (
-									<Navigate to='/login' />
-								)
-							}
+							element={useProtectedElement(
+								<CreateCourse addCourse={addCourse} />
+							)}
 						/>
 						<Route
 							path='/courses'
-							element={
-								isLoggedIn ? (
-									hasCourses ? (
-										<Courses />
-									) : (
-										<EmptyCoursesList userRole={userRoleFromStore} />
-									)
+							element={useProtectedElement(
+								hasCourses ? (
+									<Courses />
 								) : (
-									<Navigate to='/login' />
+									<EmptyCoursesList userRole={userRoleFromStore} />
 								)
-							}
+							)}
 						/>
 						<Route
 							path='/courses/:courseId'
-							element={
-								isLoggedIn ? (
-									<CourseInfo authors={authorsFromStore} />
-								) : (
-									<Navigate to='/login' />
-								)
-							}
+							element={useProtectedElement(
+								<CourseInfo authors={authorsFromStore} />
+							)}
 						/>
 					</Routes>
 				</main>

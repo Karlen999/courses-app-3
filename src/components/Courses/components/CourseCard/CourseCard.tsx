@@ -31,7 +31,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, authors }) => {
 	};
 
 	return (
-		<Link to={`/course/${course.id}`} className='course-card-link'>
+		<Link to={`/courses/${course.id}`} className='course-card-link'>
 			<div className='course-card'>
 				<div className='course-card-left'>
 					<h2 className='course-card-title'>{course.title}</h2>
