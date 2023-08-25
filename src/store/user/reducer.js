@@ -1,11 +1,17 @@
 import { SET_AUTHENTICATED, SET_USER_DETAILS, LOGOUT_USER } from './types';
 
+const storedUserInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+console.log(
+	'Role from localStorage during Redux state initialization:',
+	JSON.parse(localStorage.getItem('userInfo') || '{}').role
+);
+
 const userInitialState = {
-	isAuth: false,
-	name: '',
-	email: '',
+	isAuth: !!localStorage.getItem('token'),
+	name: storedUserInfo.name || '',
+	email: storedUserInfo.email || '',
 	token: localStorage.getItem('token') || '',
-	role: undefined,
+	role: storedUserInfo.role || undefined,
 };
 
 export const userReducer = (state = userInitialState, action) => {
@@ -16,7 +22,7 @@ export const userReducer = (state = userInitialState, action) => {
 			console.log('Setting user details in Redux:', action.payload);
 			return { ...state, ...action.payload };
 		case LOGOUT_USER:
-			return { ...userInitialState, token: '' };
+			return { ...userInitialState, token: '', isAuth: false };
 		default:
 			return state;
 	}

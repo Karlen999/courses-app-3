@@ -11,9 +11,12 @@ const Header: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const user = useSelector((state: RootState) => state.user);
+	console.log('User state in Header:', user);
+	console.log('Role in Header:', user.role);
 
 	const handleLogout = () => {
 		localStorage.removeItem('token');
+		localStorage.removeItem('userInfo');
 		dispatch(logoutUser());
 	};
 
@@ -21,9 +24,7 @@ const Header: React.FC = () => {
 		<header className='app-header'>
 			<Logo />
 			<div className='user-section'>
-				{user.isAuth && user.name ? (
-					<span className='username'>{user.name}</span>
-				) : null}
+				{user.name ? <span className='username'>{user.name}</span> : null}
 				{user.isAuth ? (
 					<Button buttonText='Logout' onClick={handleLogout} />
 				) : (

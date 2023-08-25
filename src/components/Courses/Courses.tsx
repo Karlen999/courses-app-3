@@ -6,7 +6,9 @@ import { Author, Course, RootState } from '../../types';
 import './Courses.css';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAuthorsData, fetchCoursesData } from '../../store/thunks';
+import { setAuthors } from '../../store/authors/actions';
+import { fetchAuthors, fetchCourses } from '../../services';
+import { setCourses } from '../../store/courses/actions';
 
 const Courses: React.FC = () => {
 	const dispatch: Dispatch<any> = useDispatch();
@@ -18,8 +20,21 @@ const Courses: React.FC = () => {
 	const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
 
 	useEffect(() => {
-		dispatch(fetchCoursesData());
-		dispatch(fetchAuthorsData());
+		const fetchData = async () => {
+			try {
+				const coursesData = await fetchCourses();
+				dispatch(setCourses(coursesData));
+
+				const authorsData = await fetchAuthors();
+				dispatch(setAuthors(authorsData));
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
+
+		fetchData().catch((error) => {
+			console.error('Unhandled error:', error);
+		});
 	}, [dispatch]);
 
 	useEffect(() => {
