@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setAuthenticated, setUserDetails } from '../../store/user/actions';
 import './Login.css';
 
 interface LoginProps {
@@ -8,6 +10,7 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const [formData, setFormData] = useState({
 		email: '',
 		password: '',
@@ -39,9 +42,23 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 					body: JSON.stringify(formData),
 				});
 				if (response.status === 201) {
-					const { result } = await response.json();
-					localStorage.setItem('token', result);
+					const { result: token, user } = await response.json();
+					const nameToStore = user.name || user.email;
+					localStorage.setItem('token', token);
+					const role = user.email === 'admin@email.com' ? 'admin' : 'user';
+					console.log('Role after login:', role);
+					localStorage.setItem('userInfo', JSON.stringify(user));
+					dispatch(
+						setUserDetails({
+							name: nameToStore,
+							email: formData.email,
+							token: token,
+							role: role,
+						})
+					);
+					console.log('Role after login:', role);
 					onLoginSuccess();
+					console.log('Role after login:', role);
 					navigate('/courses');
 				} else {
 					const data = await response.json();

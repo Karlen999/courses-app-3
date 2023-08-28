@@ -13,79 +13,67 @@ import CreateCourse from './components/CreateCourse/CreateCourse';
 import EmptyCoursesList from './components/Courses/EmptyCoursesList';
 import Registration from './components/Registration/Registration';
 import Login from './components/Login/Login';
-import { mockedCoursesList, mockedAuthorsList } from './constants';
-
-type Course = {
-	id: string;
-	title: string;
-	description: string;
-	creationDate: string;
-	duration: number;
-	authors: string[];
-};
+import { RootState, Course } from './types';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuthenticated } from './store/user/actions';
+import useProtectedElement from './utils/useProtectedElement';
 
 const App: React.FC = () => {
-	const hasCourses = mockedCoursesList && mockedCoursesList.length > 0;
-	const [coursesList, setCoursesList] = useState(mockedCoursesList);
+	const dispatch = useDispatch();
+
+	const coursesFromStore = useSelector((state: RootState) => state.courses);
+	const authorsFromStore = useSelector((state: RootState) => state.authors);
+	const userRoleFromStore = useSelector((state: RootState) => state.user.role);
+
+	const hasCourses = coursesFromStore && authorsFromStore.length > 0;
+	const [coursesList, setCoursesList] = useState<Course[]>(coursesFromStore);
 	const addCourse = (newCourse: Course) => {
 		setCoursesList((prevCourses) => [...prevCourses, newCourse]);
 	};
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	return (
 		<Router>
-			<Header isLoggedIn={isLoggedIn} onLogout={() => setIsLoggedIn(false)} />
+			<Header />
 			<div className='app-container'>
 				<main>
 					<Routes>
 						<Route
 							path='/login'
-							element={<Login onLoginSuccess={() => setIsLoggedIn(true)} />}
+							element={
+								<Login
+									onLoginSuccess={() => dispatch(setAuthenticated(true))}
+								/>
+							}
 						/>
 						<Route
 							path='/registration'
 							element={
 								<Registration
-									onRegistrationSuccess={() => setIsLoggedIn(true)}
+									onRegistrationSuccess={() => dispatch(setAuthenticated(true))}
 								/>
 							}
 						/>
 						<Route
 							path='/courses/add'
-							element={
-								isLoggedIn ? (
-									<CreateCourse addCourse={addCourse} />
-								) : (
-									<Navigate to='/login' />
-								)
-							}
+							element={useProtectedElement(
+								<CreateCourse addCourse={addCourse} />
+							)}
 						/>
 						<Route
 							path='/courses'
-							element={
-								isLoggedIn ? (
-									hasCourses ? (
-										<Courses
-											courses={coursesList}
-											authors={mockedAuthorsList}
-										/>
-									) : (
-										<EmptyCoursesList />
-									)
+							element={useProtectedElement(
+								hasCourses ? (
+									<Courses />
 								) : (
-									<Navigate to='/login' />
+									<EmptyCoursesList userRole={userRoleFromStore} />
 								)
-							}
+							)}
 						/>
 						<Route
 							path='/courses/:courseId'
-							element={
-								isLoggedIn ? (
-									<CourseInfo authors={mockedAuthorsList} />
-								) : (
-									<Navigate to='/login' />
-								)
-							}
+							element={useProtectedElement(
+								<CourseInfo authors={authorsFromStore} />
+							)}
 						/>
 					</Routes>
 				</main>

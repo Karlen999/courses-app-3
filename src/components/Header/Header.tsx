@@ -3,29 +3,29 @@ import Logo from './components/Logo/Logo';
 import Button from '../../common/Button/Button';
 import './Header.css';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../types';
+import { logoutUser } from '../../store/user/actions';
 
-type HeaderProps = {
-	isLoggedIn: boolean;
-	onLogout: () => void;
-};
+const Header: React.FC = () => {
+	const dispatch = useDispatch();
 
-const Header: React.FC<HeaderProps> = ({ isLoggedIn, onLogout }) => {
+	const user = useSelector((state: RootState) => state.user);
+	console.log('User state in Header:', user);
+	console.log('Role in Header:', user.role);
+
 	const handleLogout = () => {
 		localStorage.removeItem('token');
-		localStorage.removeItem('username');
-		onLogout();
+		localStorage.removeItem('userInfo');
+		dispatch(logoutUser());
 	};
-
-	const username = localStorage.getItem('username');
 
 	return (
 		<header className='app-header'>
 			<Logo />
 			<div className='user-section'>
-				{isLoggedIn && username ? (
-					<span className='username'>{username}</span>
-				) : null}
-				{isLoggedIn ? (
+				{user.name ? <span className='username'>{user.name}</span> : null}
+				{user.isAuth ? (
 					<Button buttonText='Logout' onClick={handleLogout} />
 				) : (
 					<Link to='/login'>

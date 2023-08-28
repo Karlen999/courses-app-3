@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router-dom'; // import the hook
 import './EmptyCoursesList.css';
 
 interface EmptyCoursesListProps {
-	userRole?: 'ADMIN' | 'REGULAR';
+	userRole?: 'admin' | 'user';
 }
 
 const EmptyCoursesList: React.FC<EmptyCoursesListProps> = ({ userRole }) => {
+	console.log(userRole);
 	const ADD_NEW_COURSE_TEXT = 'Add New Course';
 	const NO_PERMISSION_TEXT =
 		"You don't have permissions to create a course. Please log in as ADMIN";
@@ -19,17 +20,20 @@ const EmptyCoursesList: React.FC<EmptyCoursesListProps> = ({ userRole }) => {
 	};
 
 	return (
-		<div className='empty-course-list'>
-			<h1>Course List is Empty</h1>
-			<h3>Please use "Add New Course" button to add your first course</h3>
-			{userRole === 'ADMIN' ? (
-				<Button
-					buttonText={ADD_NEW_COURSE_TEXT}
-					onClick={handleAddCourseClick}
-				/>
-			) : (
-				<p>{NO_PERMISSION_TEXT}</p>
-			)}
+		<div className='empty-course-container'>
+			<div className='empty-course-list'>
+				<h1>Course List is Empty</h1>
+				<h3>Please use "Add New Course" button to add your first course</h3>
+				{userRole === 'admin' ? (
+					<Button
+						className='add-course-button'
+						buttonText={ADD_NEW_COURSE_TEXT}
+						onClick={handleAddCourseClick}
+					/>
+				) : (
+					<p>{NO_PERMISSION_TEXT}</p>
+				)}
+			</div>
 		</div>
 	);
 };

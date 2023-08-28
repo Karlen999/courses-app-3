@@ -1,3 +1,9 @@
+.empty-course-container{
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
 .empty-course-list {
     text-align: center;
     padding: 20px;
@@ -12,4 +18,15 @@
 .empty-course-list h3 {
     font-size: 1.2em;
     margin-bottom: 20px;
+}
+
+.add-course-button {
+    width: 286px;
+    height: 50px;
+    padding: 13px 36px;
+    border-radius: 4px;
+    background-color: #007298;
+    color: #FFF;
+    margin-top: 20px;
+    cursor: pointer;
 }
