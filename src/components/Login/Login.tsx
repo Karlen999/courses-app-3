@@ -47,7 +47,6 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 					localStorage.setItem('token', token);
 					const role = user.email === 'admin@email.com' ? 'admin' : 'user';
 					console.log('Role after login:', role);
-					localStorage.setItem('userInfo', JSON.stringify(user));
 					dispatch(
 						setUserDetails({
 							name: nameToStore,

@@ -6,9 +6,8 @@ import { Author, Course, RootState } from '../../types';
 import './Courses.css';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthors } from '../../store/authors/actions';
-import { fetchAuthors, fetchCourses } from '../../services';
-import { setCourses } from '../../store/courses/actions';
+import { fetchCoursesThunk } from '../../store/courses/thunk';
+import { fetchAuthorsThunk } from '../../store/authors/thunk';
 
 const Courses: React.FC = () => {
 	const dispatch: Dispatch<any> = useDispatch();
@@ -18,24 +17,15 @@ const Courses: React.FC = () => {
 
 	const navigate = useNavigate();
 	const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+	const token = localStorage.getItem('token');
+	const userRole = useSelector((state: RootState) => state.user.role);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const coursesData = await fetchCourses();
-				dispatch(setCourses(coursesData));
-
-				const authorsData = await fetchAuthors();
-				dispatch(setAuthors(authorsData));
-			} catch (error) {
-				console.error('Error fetching data:', error);
-			}
-		};
-
-		fetchData().catch((error) => {
-			console.error('Unhandled error:', error);
-		});
-	}, [dispatch]);
+		if (token) {
+			dispatch(fetchCoursesThunk());
+			dispatch(fetchAuthorsThunk());
+		}
+	}, [dispatch, token]);
 
 	useEffect(() => {
 		setFilteredCourses(courses);
@@ -59,10 +49,12 @@ const Courses: React.FC = () => {
 		<div className='courses-container'>
 			<div className='courses-header'>
 				<SearchBar onSearch={handleSearch} />
-				<Button
-					buttonText='Add New Course'
-					onClick={() => navigate('/courses/add')}
-				/>
+				{userRole === 'admin' && (
+					<Button
+						buttonText='Add New Course'
+						onClick={() => navigate('/courses/add')}
+					/>
+				)}
 			</div>
 
 			{filteredCourses.map((course) => (

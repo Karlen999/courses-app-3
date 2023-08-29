@@ -13,10 +13,18 @@ import { formatDuration } from '../../helpers/getCourseDuration';
 import AddIcon from '../../assets/AddIcon.svg';
 import DeleteIcon from '../../assets/DeleteIcon.svg';
 import { v4 as uuidv4 } from 'uuid';
-import { RootState } from '../../types';
-import './CreateCourse.css';
+import { Course, RootState } from '../../types';
+import './CourseForm.css';
 import { saveAuthor } from '../../store/authors/actions';
 import { saveCourse } from '../../store/courses/actions';
+import {
+	addCourseThunk,
+	fetchCoursesThunk,
+	updateCourseThunk,
+} from '../../store/courses/thunk';
+import { AppDispatch } from '../../store';
+import { addCourseAPI, updateCourseAPI } from '../../services';
+import { fetchAuthorsThunk } from '../../store/authors/thunk';
 
 type Author = {
 	id: string;
@@ -30,11 +38,17 @@ type Errors = {
 };
 
 type CreateCourseProps = {
-	addCourse: (course: any) => void;
+	addCourse?: (course: Course) => void;
+	updateCourse?: (course: Course) => void;
+	courseId?: string;
 };
 
-const CreateCourse: React.FC<CreateCourseProps> = ({ addCourse }) => {
-	const dispatch = useDispatch();
+const CourseForm: React.FC<CreateCourseProps> = ({
+	addCourse,
+	updateCourse,
+	courseId,
+}) => {
+	const dispatch: AppDispatch = useDispatch();
 	const navigate = useNavigate();
 	const authorsFromStore = useSelector((state: RootState) => state.authors);
 	const [title, setTitle] = useState<string>('');
@@ -45,10 +59,31 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ addCourse }) => {
 	const [newAuthorName, setNewAuthorName] = useState<string>('');
 	const [selectedAuthorId, setSelectedAuthorId] = useState<string | null>(null);
 	const [errors, setErrors] = useState<Errors>({});
+	const courseToEdit = useSelector((state: RootState) =>
+		state.courses.find((course) => course.id === courseId)
+	);
 
 	useEffect(() => {
-		setAuthors(authorsFromStore);
-	}, [authorsFromStore]);
+		if (courseToEdit) {
+			setTitle(courseToEdit.title);
+			setDescription(courseToEdit.description);
+			setDuration(courseToEdit.duration);
+			const authorsForCourse = courseToEdit.authors
+				.map((authorId) =>
+					authorsFromStore.find((author) => author.id === authorId)
+				)
+				.filter(Boolean) as Author[];
+			setCourseAuthors(authorsForCourse);
+		}
+	}, [courseToEdit, authorsFromStore]);
+
+	useEffect(() => {
+		const token = localStorage.getItem('token');
+		if (token) {
+			dispatch(fetchCoursesThunk());
+			dispatch(fetchAuthorsThunk());
+		}
+	}, [dispatch]);
 
 	const validateFields = (): boolean => {
 		const errors: Errors = {};
@@ -108,20 +143,25 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ addCourse }) => {
 		}
 	};
 
-	const handleSaveCourse = () => {
-		if (validateFields()) {
-			const newCourse = {
-				id: uuidv4(),
-				title,
-				description,
-				creationDate: new Date().toISOString(),
-				duration,
+	const handleSaveCourse = async () => {
+		try {
+			const courseData = {
+				title: title,
+				description: description,
+				duration: duration,
 				authors: courseAuthors.map((author) => author.id),
 			};
 
-			addCourse(newCourse);
-			dispatch(saveCourse(newCourse));
+			if (courseId) {
+				await updateCourseAPI(courseId, courseData);
+				dispatch(updateCourseThunk(courseId, courseData));
+			} else {
+				await addCourseAPI(courseData);
+				dispatch(addCourseThunk(courseData));
+			}
 			navigate('/courses');
+		} catch (error) {
+			console.error('Failed to save/update the course:', error);
 		}
 	};
 
@@ -231,11 +271,11 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ addCourse }) => {
 					className='primary-standard-button create-course-button'
 					onClick={handleSaveCourse}
 				>
-					CREATE COURSE
+					{courseId ? 'UPDATE COURSE' : 'CREATE COURSE'}
 				</button>
 			</div>
 		</>
 	);
 };
 
-export default CreateCourse;
+export default CourseForm;
