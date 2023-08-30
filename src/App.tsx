@@ -78,9 +78,9 @@ const App: React.FC = () => {
 						<Route path='/courses/add' element={<PrivateRoute />}>
 							<Route index element={<CourseForm addCourse={addCourse} />} />
 						</Route>
-						<Route path='/courses/update/:courseId' element={<PrivateRoute />}>
-							<Route index element={<CourseForm />} />
-						</Route>
+						{/*<Route path='/courses/update/:courseId' element={<PrivateRoute />}>*/}
+						{/*	<Route index element={<CourseForm />} />*/}
+						{/*</Route>*/}
 						<Route
 							path='/courses'
 							element={useProtectedElement(

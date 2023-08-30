@@ -13,18 +13,11 @@ import { formatDuration } from '../../helpers/getCourseDuration';
 import AddIcon from '../../assets/AddIcon.svg';
 import DeleteIcon from '../../assets/DeleteIcon.svg';
 import { v4 as uuidv4 } from 'uuid';
-import { Course, RootState } from '../../types';
+import { RootState } from '../../types';
 import './CourseForm.css';
 import { saveAuthor } from '../../store/authors/actions';
 import { saveCourse } from '../../store/courses/actions';
-import {
-	addCourseThunk,
-	fetchCoursesThunk,
-	updateCourseThunk,
-} from '../../store/courses/thunk';
-import { AppDispatch } from '../../store';
-import { addCourseAPI, updateCourseAPI } from '../../services';
-import { fetchAuthorsThunk } from '../../store/authors/thunk';
+import { addAuthorAPI, addCourseAPI } from '../../services';
 
 type Author = {
 	id: string;
@@ -38,17 +31,11 @@ type Errors = {
 };
 
 type CreateCourseProps = {
-	addCourse?: (course: Course) => void;
-	updateCourse?: (course: Course) => void;
-	courseId?: string;
+	addCourse: (course: any) => void;
 };
 
-const CourseForm: React.FC<CreateCourseProps> = ({
-	addCourse,
-	updateCourse,
-	courseId,
-}) => {
-	const dispatch: AppDispatch = useDispatch();
+const CourseForm: React.FC<CreateCourseProps> = ({ addCourse }) => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const authorsFromStore = useSelector((state: RootState) => state.authors);
 	const [title, setTitle] = useState<string>('');
@@ -59,31 +46,10 @@ const CourseForm: React.FC<CreateCourseProps> = ({
 	const [newAuthorName, setNewAuthorName] = useState<string>('');
 	const [selectedAuthorId, setSelectedAuthorId] = useState<string | null>(null);
 	const [errors, setErrors] = useState<Errors>({});
-	const courseToEdit = useSelector((state: RootState) =>
-		state.courses.find((course) => course.id === courseId)
-	);
 
 	useEffect(() => {
-		if (courseToEdit) {
-			setTitle(courseToEdit.title);
-			setDescription(courseToEdit.description);
-			setDuration(courseToEdit.duration);
-			const authorsForCourse = courseToEdit.authors
-				.map((authorId) =>
-					authorsFromStore.find((author) => author.id === authorId)
-				)
-				.filter(Boolean) as Author[];
-			setCourseAuthors(authorsForCourse);
-		}
-	}, [courseToEdit, authorsFromStore]);
-
-	useEffect(() => {
-		const token = localStorage.getItem('token');
-		if (token) {
-			dispatch(fetchCoursesThunk());
-			dispatch(fetchAuthorsThunk());
-		}
-	}, [dispatch]);
+		setAuthors(authorsFromStore);
+	}, [authorsFromStore]);
 
 	const validateFields = (): boolean => {
 		const errors: Errors = {};
@@ -131,37 +97,41 @@ const CourseForm: React.FC<CreateCourseProps> = ({
 		}
 	};
 
-	const handleCreateAuthor = () => {
+	const handleCreateAuthor = async () => {
 		if (newAuthorName.length >= 2) {
-			const newAuthor: Author = {
-				id: uuidv4(),
+			const newAuthor = {
 				name: newAuthorName,
 			};
-			dispatch(saveAuthor(newAuthor));
-			setAuthors((prevAuthors) => [...prevAuthors, newAuthor]);
-			setNewAuthorName('');
+			const savedAuthor = await addAuthorAPI(newAuthor);
+			if (savedAuthor) {
+				// Dispatch the received data to an appropriate Redux action (this will depend on your existing Redux structure).
+				dispatch(saveAuthor(savedAuthor));
+				// Reset the newAuthorName state or any other relevant states.
+				setNewAuthorName('');
+			} else {
+				console.error('Failed to save the author to the backend');
+			}
 		}
 	};
 
 	const handleSaveCourse = async () => {
-		try {
-			const courseData = {
-				title: title,
-				description: description,
-				duration: duration,
+		if (validateFields()) {
+			const newCourse = {
+				title,
+				description,
+				creationDate: new Date().toISOString(),
+				duration,
 				authors: courseAuthors.map((author) => author.id),
 			};
 
-			if (courseId) {
-				await updateCourseAPI(courseId, courseData);
-				dispatch(updateCourseThunk(courseId, courseData));
+			const savedCourse = await addCourseAPI(newCourse);
+			if (savedCourse) {
+				// Dispatch the received data to the saveCourse action.
+				dispatch(saveCourse(savedCourse));
+				navigate('/courses');
 			} else {
-				await addCourseAPI(courseData);
-				dispatch(addCourseThunk(courseData));
+				console.error('Failed to save the course to the backend');
 			}
-			navigate('/courses');
-		} catch (error) {
-			console.error('Failed to save/update the course:', error);
 		}
 	};
 
@@ -271,7 +241,7 @@ const CourseForm: React.FC<CreateCourseProps> = ({
 					className='primary-standard-button create-course-button'
 					onClick={handleSaveCourse}
 				>
-					{courseId ? 'UPDATE COURSE' : 'CREATE COURSE'}
+					CREATE COURSE
 				</button>
 			</div>
 		</>

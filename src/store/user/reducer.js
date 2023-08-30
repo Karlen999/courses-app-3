@@ -11,7 +11,7 @@ const userInitialState = {
 	name: storedUserInfo.name || '',
 	email: storedUserInfo.email || '',
 	token: localStorage.getItem('token') || '',
-	role: storedUserInfo.role || undefined,
+	role: storedUserInfo.role || '',
 };
 
 export const userReducer = (state = userInitialState, action) => {

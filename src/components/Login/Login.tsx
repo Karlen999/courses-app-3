@@ -58,6 +58,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 					console.log('Role after login:', role);
 					onLoginSuccess();
 					console.log('Role after login:', role);
+					console.log('Token being sent:', token);
 					navigate('/courses');
 				} else {
 					const data = await response.json();
