@@ -1,22 +1,21 @@
 .course-card-link {
-    text-decoration: none;
-    display: block;
+    display: flex;
+    flex-direction: column;
     margin: 30px auto;
 }
 
 .course-buttons-container {
     display: flex;
-    gap: 10px; /* You can adjust this for space between buttons */
+    gap: 10px;
     align-items: center;
 }
 
 .course-card {
-    height: 192px;
+    display: flex;
     background-color: #FFF;
     border: 1px solid rgba(0, 0, 0, 0.12);
     box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.12);
     padding: 20px;
-    box-sizing: border-box;
     border-radius: 8px;
     transition: transform 0.3s;
 }
@@ -56,6 +55,7 @@
 }
 
 .course-card-right div {
+    justify-content: space-between;
     width: 353px;
     color: #333E48;
     font-feature-settings: 'clig' off, 'liga' off;
@@ -64,14 +64,12 @@
     font-style: normal;
     font-weight: 700;
     line-height: 11px;
-    margin-top: -125px;
 }
 
 .course-card-right button, .course-button {
     display: flex;
     width: 60px;
     height: 50px;
-    padding: 13px 30px;
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -81,7 +79,7 @@
     color: #FFF;
     border: none;
     cursor: pointer;
-    margin-bottom: -30px;
+    margin-right: 1rem;
 }
 
 .course-card-top-stripe {

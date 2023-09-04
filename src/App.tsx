@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	BrowserRouter as Router,
 	Routes,
@@ -9,7 +9,6 @@ import './App.css';
 import Header from './components/Header/Header';
 import Courses from './components/Courses/Courses';
 import CourseInfo from './components/CourseInfo/CourseInfo';
-import CreateCourse from './components/CreateCourse/CreateCourse';
 import EmptyCoursesList from './components/Courses/EmptyCoursesList';
 import Registration from './components/Registration/Registration';
 import Login from './components/Login/Login';
@@ -17,19 +16,35 @@ import { RootState, Course } from './types';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthenticated } from './store/user/actions';
 import useProtectedElement from './utils/useProtectedElement';
+import CourseForm from './components/CreateCourse/CourseForm';
+import { fetchCurrentUser } from './store/user/thunk';
+import { AppDispatch } from './store';
+import { saveCourse, updateCourse } from './store/courses/actions';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import { fetchCoursesThunk } from './store/courses/thunk';
+import { getToken } from './utils/storageUtils';
 
 const App: React.FC = () => {
-	const dispatch = useDispatch();
+	const dispatch: AppDispatch = useDispatch();
 
-	const coursesFromStore = useSelector((state: RootState) => state.courses);
-	const authorsFromStore = useSelector((state: RootState) => state.authors);
-	const userRoleFromStore = useSelector((state: RootState) => state.user.role);
+	const { courses, authors, role } = useSelector((state: RootState) => ({
+		courses: state.courses,
+		authors: state.authors,
+		role: state.user.role,
+	}));
+	const token = getToken();
 
-	const hasCourses = coursesFromStore && authorsFromStore.length > 0;
-	const [coursesList, setCoursesList] = useState<Course[]>(coursesFromStore);
+	const hasCourses = courses && courses.length > 0;
 	const addCourse = (newCourse: Course) => {
-		setCoursesList((prevCourses) => [...prevCourses, newCourse]);
+		dispatch(saveCourse(newCourse));
 	};
+
+	useEffect(() => {
+		if (token) {
+			dispatch(fetchCurrentUser());
+			dispatch(fetchCoursesThunk());
+		}
+	}, [token]);
 
 	return (
 		<Router>
@@ -37,6 +52,16 @@ const App: React.FC = () => {
 			<div className='app-container'>
 				<main>
 					<Routes>
+						<Route
+							path='/'
+							element={
+								role ? (
+									<Navigate to='/courses' replace />
+								) : (
+									<Navigate to='/login' replace />
+								)
+							}
+						/>
 						<Route
 							path='/login'
 							element={
@@ -53,27 +78,21 @@ const App: React.FC = () => {
 								/>
 							}
 						/>
-						<Route
-							path='/courses/add'
-							element={useProtectedElement(
-								<CreateCourse addCourse={addCourse} />
-							)}
-						/>
+						<Route path='/courses/add' element={<PrivateRoute />}>
+							<Route index element={<CourseForm addCourse={addCourse} />} />
+						</Route>
+						{/*<Route path='/courses/update/:courseId' element={<PrivateRoute />}>*/}
+						{/*	<Route index element={<CourseForm />} />*/}
+						{/*</Route>*/}
 						<Route
 							path='/courses'
 							element={useProtectedElement(
-								hasCourses ? (
-									<Courses />
-								) : (
-									<EmptyCoursesList userRole={userRoleFromStore} />
-								)
+								hasCourses ? <Courses /> : <EmptyCoursesList userRole={role} />
 							)}
 						/>
 						<Route
 							path='/courses/:courseId'
-							element={useProtectedElement(
-								<CourseInfo authors={authorsFromStore} />
-							)}
+							element={useProtectedElement(<CourseInfo authors={authors} />)}
 						/>
 					</Routes>
 				</main>

@@ -28,3 +28,10 @@ export type RootState = {
 		role?: 'admin' | 'user';
 	};
 };
+
+export type CourseData = {
+	title: string;
+	description: string;
+	duration: number;
+	authors: Author[];
+};

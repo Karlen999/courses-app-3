@@ -12,11 +12,13 @@ import AuthorItem from './components/AuthorItem/AuthorItem';
 import { formatDuration } from '../../helpers/getCourseDuration';
 import AddIcon from '../../assets/AddIcon.svg';
 import DeleteIcon from '../../assets/DeleteIcon.svg';
-import { v4 as uuidv4 } from 'uuid';
-import { RootState } from '../../types';
-import './CreateCourse.css';
+import './CourseForm.css';
 import { saveAuthor } from '../../store/authors/actions';
 import { saveCourse } from '../../store/courses/actions';
+import { addAuthorAPI, addCourseAPI } from '../../services';
+import { addCourseThunk } from '../../store/courses/thunk';
+import { ThunkDispatch } from 'redux-thunk';
+import { RootState } from '../../store';
 
 type Author = {
 	id: string;
@@ -33,8 +35,8 @@ type CreateCourseProps = {
 	addCourse: (course: any) => void;
 };
 
-const CreateCourse: React.FC<CreateCourseProps> = ({ addCourse }) => {
-	const dispatch = useDispatch();
+const CourseForm: React.FC<CreateCourseProps> = ({ addCourse }) => {
+	const dispatch = useDispatch<ThunkDispatch<RootState, undefined, any>>();
 	const navigate = useNavigate();
 	const authorsFromStore = useSelector((state: RootState) => state.authors);
 	const [title, setTitle] = useState<string>('');
@@ -96,32 +98,36 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ addCourse }) => {
 		}
 	};
 
-	const handleCreateAuthor = () => {
+	const handleCreateAuthor = async () => {
 		if (newAuthorName.length >= 2) {
-			const newAuthor: Author = {
-				id: uuidv4(),
+			const newAuthor = {
 				name: newAuthorName,
 			};
-			dispatch(saveAuthor(newAuthor));
-			setAuthors((prevAuthors) => [...prevAuthors, newAuthor]);
-			setNewAuthorName('');
+			const savedAuthor = await addAuthorAPI(newAuthor);
+			if (savedAuthor) {
+				dispatch(saveAuthor(savedAuthor));
+				setNewAuthorName('');
+			} else {
+				console.error('Failed to save the author to the backend');
+			}
 		}
 	};
 
-	const handleSaveCourse = () => {
+	const handleSaveCourse = async () => {
 		if (validateFields()) {
 			const newCourse = {
-				id: uuidv4(),
 				title,
 				description,
-				creationDate: new Date().toISOString(),
 				duration,
 				authors: courseAuthors.map((author) => author.id),
 			};
 
-			addCourse(newCourse);
-			dispatch(saveCourse(newCourse));
-			navigate('/courses');
+			try {
+				dispatch(addCourseThunk(newCourse));
+				navigate('/courses');
+			} catch (error) {
+				console.error('Failed to save the course:', error);
+			}
 		}
 	};
 
@@ -238,4 +244,4 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ addCourse }) => {
 	);
 };
 
-export default CreateCourse;
+export default CourseForm;
