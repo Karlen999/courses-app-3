@@ -8,7 +8,6 @@ interface EmptyCoursesListProps {
 }
 
 const EmptyCoursesList: React.FC<EmptyCoursesListProps> = ({ userRole }) => {
-	console.log(userRole);
 	const ADD_NEW_COURSE_TEXT = 'Add New Course';
 	const NO_PERMISSION_TEXT =
 		"You don't have permissions to create a course. Please log in as ADMIN";

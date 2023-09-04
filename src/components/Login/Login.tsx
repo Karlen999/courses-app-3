@@ -46,7 +46,6 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 					const nameToStore = user.name || user.email;
 					localStorage.setItem('token', token);
 					const role = user.email === 'admin@email.com' ? 'admin' : 'user';
-					console.log('Role after login:', role);
 					dispatch(
 						setUserDetails({
 							name: nameToStore,
@@ -55,10 +54,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 							role: role,
 						})
 					);
-					console.log('Role after login:', role);
 					onLoginSuccess();
-					console.log('Role after login:', role);
-					console.log('Token being sent:', token);
 					navigate('/courses');
 				} else {
 					const data = await response.json();

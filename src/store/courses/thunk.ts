@@ -21,7 +21,7 @@ export const fetchCoursesThunk = (): AppThunk => async (dispatch) => {
 	try {
 		const courses = await fetchCourses();
 		const localCourses = JSON.parse(localStorage.getItem('courses') || '{}');
-		dispatch(setCourses([localCourses, ...courses]));
+		dispatch(setCourses([...localCourses, ...courses]));
 	} catch (error) {
 		console.error('Failed to fetch courses:', error);
 	}

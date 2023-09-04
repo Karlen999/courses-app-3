@@ -18,7 +18,6 @@ type CourseInfoProps = {
 
 const CourseInfo: React.FC<CourseInfoProps> = ({ authors }) => {
 	const { courseId } = useParams<ParamsType>();
-	console.log('Course ID from URL:', courseId);
 
 	const navigate = useNavigate();
 
@@ -26,7 +25,6 @@ const CourseInfo: React.FC<CourseInfoProps> = ({ authors }) => {
 	const authorsFromStore = useSelector((state: RootState) => state.authors);
 
 	const course = courses.find((course) => course.id === courseId);
-	console.log('Found course:', course);
 
 	if (!course) {
 		return <div>Course not found!</div>;

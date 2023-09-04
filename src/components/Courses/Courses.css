@@ -5,37 +5,24 @@
 	align-items: center;
 	margin-bottom: 20px;
 	width: 100%;
-	padding: 0 15px;
 }
 
 /* Styling for the search bar to stack elements vertically */
 .courses-header .search-bar {
-	flex: 2;
 	display: flex;
-	flex-direction: row;  /* Stack child elements vertically */
-	justify-content: flex-start;
-	align-items: center;  /* Allow child elements to take full width */
 }
 
 .courses-header .search-bar input {
-	padding: 24px 50px;
 	border: 2px solid #e2e6eb;
-	border-radius: 5px;
 	font-size: 1em;
-	margin-bottom: -12px;
+	width: 80%;
+	padding: 20px;
+	margin-top: 10px;
 }
 
 /* Styling for the search button to ensure consistent size */
 .courses-header .search-bar button {
-	display: flex;
-	width: 148px;
-	height: 50px;
-	padding: 13px 36px;
-	justify-content: center;
 	align-items: center;
-	gap: 10px;
-	flex-shrink: 0;
-
 	border-radius: 5px;
 	background-color: #007298;
 	color: #FFF;
@@ -48,17 +35,10 @@
 /* Styling for the "Add New Course" button to match the search button size */
 .courses-header button {
 	display: flex;
-	width: 183px;
-	height: 50px;
-	padding: 13px 36px;
-	justify-content: center;
 	align-items: center;
-	gap: 10px;
-	flex-shrink: 0;
 	border-radius: 4px;
 	background:  #007298;
 	color: #FFF;
-	margin-right: 226px;
 }
 
 .courses-header button:hover {

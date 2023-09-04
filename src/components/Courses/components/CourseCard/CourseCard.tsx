@@ -22,14 +22,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, authors }) => {
 	const dispatch: AppDispatch = useDispatch();
 	const role = useSelector((state: RootState) => state.user.role);
 	const getAuthorsNames = (authorId: string[]): string => {
-		if (!authors) return '';
-
-		return (
-			authorId &&
-			authorId
-				.map((id) => authors.find((author) => author.id === id)?.name)
-				.join(', ')
-		);
+		return authorId
+			.map((id) => authors.find((author) => author.id === id)?.name)
+			.join(', ');
 	};
 
 	const handleDelete = () => {

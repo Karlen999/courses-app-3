@@ -13,8 +13,6 @@ const Header: React.FC = () => {
 	const token = localStorage.getItem('token');
 
 	const user = useSelector((state: RootState) => state.user);
-	console.log('User state in Header:', user);
-	console.log('Role in Header:', user.role);
 
 	const handleLogout = async () => {
 		try {

@@ -22,6 +22,7 @@ import { AppDispatch } from './store';
 import { saveCourse, updateCourse } from './store/courses/actions';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import { fetchCoursesThunk } from './store/courses/thunk';
+import { getToken } from './utils/storageUtils';
 
 const App: React.FC = () => {
 	const dispatch: AppDispatch = useDispatch();
@@ -31,7 +32,7 @@ const App: React.FC = () => {
 		authors: state.authors,
 		role: state.user.role,
 	}));
-	const token = localStorage.getItem('token');
+	const token = getToken();
 
 	const hasCourses = courses && courses.length > 0;
 	const addCourse = (newCourse: Course) => {
