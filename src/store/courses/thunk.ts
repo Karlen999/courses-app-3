@@ -28,10 +28,14 @@ export const fetchCoursesThunk = (): AppThunk => async (dispatch) => {
 
 export const addCourseThunk =
 	(courseData: Partial<Course>): AppThunk =>
-	async (dispatch) => {
+	async (dispatch, getState) => {
 		try {
 			const newCourse = await addCourseAPI(courseData);
 			dispatch(saveCourse(newCourse));
+
+			const state = getState();
+			const updatedCourses = [...state.courses, newCourse];
+			localStorage.setItem('courses', JSON.stringify(updatedCourses));
 		} catch (error) {
 			console.error('Failed to add the course:', error);
 		}

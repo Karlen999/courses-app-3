@@ -12,12 +12,13 @@ import AuthorItem from './components/AuthorItem/AuthorItem';
 import { formatDuration } from '../../helpers/getCourseDuration';
 import AddIcon from '../../assets/AddIcon.svg';
 import DeleteIcon from '../../assets/DeleteIcon.svg';
-import { v4 as uuidv4 } from 'uuid';
-import { RootState } from '../../types';
 import './CourseForm.css';
 import { saveAuthor } from '../../store/authors/actions';
 import { saveCourse } from '../../store/courses/actions';
 import { addAuthorAPI, addCourseAPI } from '../../services';
+import { addCourseThunk } from '../../store/courses/thunk';
+import { ThunkDispatch } from 'redux-thunk';
+import { RootState } from '../../store';
 
 type Author = {
 	id: string;
@@ -35,7 +36,7 @@ type CreateCourseProps = {
 };
 
 const CourseForm: React.FC<CreateCourseProps> = ({ addCourse }) => {
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<ThunkDispatch<RootState, undefined, any>>();
 	const navigate = useNavigate();
 	const authorsFromStore = useSelector((state: RootState) => state.authors);
 	const [title, setTitle] = useState<string>('');
@@ -104,9 +105,7 @@ const CourseForm: React.FC<CreateCourseProps> = ({ addCourse }) => {
 			};
 			const savedAuthor = await addAuthorAPI(newAuthor);
 			if (savedAuthor) {
-				// Dispatch the received data to an appropriate Redux action (this will depend on your existing Redux structure).
 				dispatch(saveAuthor(savedAuthor));
-				// Reset the newAuthorName state or any other relevant states.
 				setNewAuthorName('');
 			} else {
 				console.error('Failed to save the author to the backend');
@@ -119,18 +118,15 @@ const CourseForm: React.FC<CreateCourseProps> = ({ addCourse }) => {
 			const newCourse = {
 				title,
 				description,
-				creationDate: new Date().toISOString(),
 				duration,
 				authors: courseAuthors.map((author) => author.id),
 			};
 
-			const savedCourse = await addCourseAPI(newCourse);
-			if (savedCourse) {
-				// Dispatch the received data to the saveCourse action.
-				dispatch(saveCourse(savedCourse));
+			try {
+				dispatch(addCourseThunk(newCourse));
 				navigate('/courses');
-			} else {
-				console.error('Failed to save the course to the backend');
+			} catch (error) {
+				console.error('Failed to save the course:', error);
 			}
 		}
 	};

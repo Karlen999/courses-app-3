@@ -7,13 +7,12 @@ console.log(
 );
 
 const userInitialState = {
-	isAuth: !!localStorage.getItem('token'),
-	name: storedUserInfo.name || '',
-	email: storedUserInfo.email || '',
-	token: localStorage.getItem('token') || '',
-	role: storedUserInfo.role || '',
+	isAuth: Boolean(localStorage.getItem('token')),
+	name: localStorage.getItem('name'),
+	email: localStorage.getItem('email'),
+	role: localStorage.getItem('role') || null,
 };
-
+console.log('Initial state on page load:', userInitialState);
 export const userReducer = (state = userInitialState, action) => {
 	switch (action.type) {
 		case SET_AUTHENTICATED:

@@ -10,6 +10,8 @@ import { fetchCoursesThunk } from '../../store/courses/thunk';
 import { fetchAuthorsThunk } from '../../store/authors/thunk';
 
 const Courses: React.FC = () => {
+	console.log('Courses component rendered');
+
 	const dispatch: Dispatch<any> = useDispatch();
 	const courses = useSelector((state: RootState) => state.courses);
 	const authors = useSelector((state: RootState) => state.authors);
@@ -44,6 +46,8 @@ const Courses: React.FC = () => {
 		);
 		setFilteredCourses(matchingCourses);
 	};
+	console.log('Courses from Redux:', courses);
+	console.log('Filtered courses:', filteredCourses);
 
 	return (
 		<div className='courses-container'>
