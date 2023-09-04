@@ -24,9 +24,12 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, authors }) => {
 	const getAuthorsNames = (authorId: string[]): string => {
 		if (!authors) return '';
 
-		return authorId
-			.map((id) => authors.find((author) => author.id === id)?.name)
-			.join(', ');
+		return (
+			authorId &&
+			authorId
+				.map((id) => authors.find((author) => author.id === id)?.name)
+				.join(', ')
+		);
 	};
 
 	const handleDelete = () => {

@@ -21,6 +21,7 @@ import { fetchCurrentUser } from './store/user/thunk';
 import { AppDispatch } from './store';
 import { saveCourse, updateCourse } from './store/courses/actions';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import { fetchCoursesThunk } from './store/courses/thunk';
 
 const App: React.FC = () => {
 	const dispatch: AppDispatch = useDispatch();
@@ -32,7 +33,7 @@ const App: React.FC = () => {
 	}));
 	const token = localStorage.getItem('token');
 
-	const hasCourses = courses && authors.length > 0;
+	const hasCourses = courses && courses.length > 0;
 	const addCourse = (newCourse: Course) => {
 		dispatch(saveCourse(newCourse));
 	};
@@ -40,8 +41,9 @@ const App: React.FC = () => {
 	useEffect(() => {
 		if (token) {
 			dispatch(fetchCurrentUser());
+			dispatch(fetchCoursesThunk());
 		}
-	}, [dispatch, token]);
+	}, [token]);
 
 	return (
 		<Router>
