@@ -31,11 +31,9 @@ type Errors = {
 	duration?: string;
 };
 
-type CreateCourseProps = {
-	addCourse: (course: any) => void;
-};
+type CreateCourseProps = {};
 
-const CourseForm: React.FC<CreateCourseProps> = ({ addCourse }) => {
+const CourseForm: React.FC<CreateCourseProps> = () => {
 	const dispatch = useDispatch<ThunkDispatch<RootState, undefined, any>>();
 	const navigate = useNavigate();
 	const authorsFromStore = useSelector((state: RootState) => state.authors);
@@ -139,6 +137,7 @@ const CourseForm: React.FC<CreateCourseProps> = ({ addCourse }) => {
 					<h4 className='course-subtitle'>Main Info</h4>
 					<label className='course-input-label'>Title</label>
 					<input
+						data-testid='input-title'
 						className='course-input-title'
 						placeholder='Input text'
 						value={title}
@@ -148,6 +147,7 @@ const CourseForm: React.FC<CreateCourseProps> = ({ addCourse }) => {
 
 					<label className='course-input-label'>Description</label>
 					<input
+						data-testid='input-description'
 						className='course-input-description'
 						placeholder='Input text'
 						value={description}
@@ -182,6 +182,7 @@ const CourseForm: React.FC<CreateCourseProps> = ({ addCourse }) => {
 								name={author.name}
 								onButtonClick={() => handleDeleteAuthor(author.id)}
 								icon={DeleteIcon}
+								data-testid='author-item'
 							/>
 						))}
 					</div>
@@ -190,6 +191,7 @@ const CourseForm: React.FC<CreateCourseProps> = ({ addCourse }) => {
 					<label className='course-input-label'>Authors</label>
 					<div className='authors-input-container'>
 						<input
+							data-testid='input-author'
 							className='course-input-author'
 							placeholder='Input text'
 							value={newAuthorName}
@@ -199,6 +201,7 @@ const CourseForm: React.FC<CreateCourseProps> = ({ addCourse }) => {
 					</div>
 					<h4 className='course-subtitle'>Authors List</h4>
 					<select
+						data-testid='authors-list'
 						value={selectedAuthorId || ''}
 						onChange={(e) => setSelectedAuthorId(e.target.value)}
 						style={{ marginLeft: '80px', marginTop: '75px' }}
@@ -213,6 +216,7 @@ const CourseForm: React.FC<CreateCourseProps> = ({ addCourse }) => {
 					<div className='author-buttons-container'>
 						<button
 							className='add-author-button'
+							data-testid='add-author-button'
 							onClick={() => handleAddAuthor(selectedAuthorId || '')}
 						>
 							<img src={AddIcon} alt='' />

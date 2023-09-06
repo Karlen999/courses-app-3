@@ -21,7 +21,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, authors }) => {
 	const navigate = useNavigate();
 	const dispatch: AppDispatch = useDispatch();
 	const role = useSelector((state: RootState) => state.user.role);
-	const getAuthorsNames = (authorId: string[]): string => {
+	const getAuthorsNames = (authorId: string[] = []): string => {
 		return authorId
 			.map((id) => authors.find((author) => author.id === id)?.name)
 			.join(', ');
@@ -37,7 +37,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, authors }) => {
 
 	return (
 		<Link to={`/courses/${course.id}`} className='course-card-link'>
-			<div className='course-card'>
+			<div className='course-card' data-testid='course-card'>
 				<div className='course-card-left'>
 					<h2 className='course-card-title'>{course.title}</h2>
 					<p>{course.description}</p>
