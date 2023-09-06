@@ -57,11 +57,7 @@ const Courses: React.FC = () => {
 			</div>
 
 			{filteredCourses.map((course) => (
-				<CourseCard
-					key={course.id}
-					course={course}
-					authors={authors} // Use the authors prop here
-				/>
+				<CourseCard key={course.id} course={course} authors={authors} />
 			))}
 		</div>
 	);

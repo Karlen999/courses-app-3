@@ -36,39 +36,38 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, authors }) => {
 	};
 
 	return (
-		<Link to={`/courses/${course.id}`} className='course-card-link'>
-			<div className='course-card' data-testid='course-card'>
-				<div className='course-card-left'>
-					<h2 className='course-card-title'>{course.title}</h2>
-					<p>{course.description}</p>
+		//		<Link to={`/courses/${course.id}`} className='course-card-link'>
+		<div className='course-card' data-testid='course-card'>
+			<div className='course-card-left'>
+				<h2 className='course-card-title'>{course.title}</h2>
+				<p>{course.description}</p>
+			</div>
+			<div className='course-card-right'>
+				<div className='course-card-details'>
+					<p>Duration: {formatDuration(course.duration)}</p>
+					<p>Creation Date: {formatCreationDate(course.creationDate)}</p>
+					<p>Authors: {getAuthorsNames(course.authors)}</p>
 				</div>
-				<div className='course-card-right'>
-					<div className='course-card-details'>
-						<p>Duration: {formatDuration(course.duration)}</p>
-						<p>Creation Date: {formatCreationDate(course.creationDate)}</p>
-						<p>Authors: {getAuthorsNames(course.authors)}</p>
-					</div>
-					<div className='course-buttons-container'>
-						<button
-							className='course-card-right button'
-							onClick={() => navigate(`/courses/${course.id}`)}
-						>
-							Show Course
+				<div className='course-buttons-container'>
+					<button
+						className='course-card-right button'
+						onClick={() => navigate(`/courses/${course.id}`)}
+					>
+						Show Course
+					</button>
+					{role === 'admin' && (
+						<button className='course-button' onClick={handleDelete}>
+							<img src={DeleteIcon} alt='Delete' />
 						</button>
-						{role === 'admin' && (
-							<button className='course-button' onClick={handleDelete}>
-								<img src={DeleteIcon} alt='' />
-							</button>
-						)}
-						{role === 'admin' && (
-							<button className='course-button' onClick={handleUpdate}>
-								<img src={EditIcon} alt='' />
-							</button>
-						)}
-					</div>
+					)}
+					{role === 'admin' && (
+						<button className='course-button' onClick={handleUpdate}>
+							<img src={EditIcon} alt='Edit' />
+						</button>
+					)}
 				</div>
 			</div>
-		</Link>
+		</div>
 	);
 };
 
